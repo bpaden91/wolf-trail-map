@@ -20,21 +20,6 @@
             width: 100%; 
         }
         
-        /* Embed-friendly version */
-        .embed-container {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
-            height: 0;
-            overflow: hidden;
-        }
-        .embed-container #map {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        
         /* Trail info popup styling */
         .trail-popup {
             font-size: 14px;
@@ -45,14 +30,6 @@
             margin: 0 0 8px 0;
             color: #2c5530;
             font-size: 16px;
-        }
-        
-        /* Custom marker icons */
-        .start-marker {
-            background-color: #4CAF50;
-            color: white;
-            border-radius: 50%;
-            text-align: center;
         }
     </style>
 </head>
@@ -154,29 +131,6 @@
                 lineJoin: 'round'
             }).addTo(map);
             
-            // Custom start/end markers
-            const startIcon = L.divIcon({
-                html: '<div style="background-color: #4CAF50; color: white; border-radius: 50%; width: 20px; height: 20px; text-align: center; line-height: 20px; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">S</div>',
-                iconSize: [20, 20],
-                className: 'custom-marker'
-            });
-            
-            const endIcon = L.divIcon({
-                html: '<div style="background-color: #F44336; color: white; border-radius: 50%; width: 20px; height: 20px; text-align: center; line-height: 20px; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">E</div>',
-                iconSize: [20, 20],
-                className: 'custom-marker'
-            });
-            
-            const startMarker = L.marker(trailCoords[0], {
-                icon: startIcon,
-                title: 'Trail Start'
-            }).addTo(map);
-            
-            const endMarker = L.marker(trailCoords[trailCoords.length - 1], {
-                icon: endIcon,
-                title: 'Trail End'
-            }).addTo(map);
-            
             // Add popup with trail information
             const popupContent = `
                 <div class="trail-popup">
@@ -185,14 +139,13 @@
                     <p><strong>Location:</strong> Bentonville, AR</p>
                     <p><strong>Surface:</strong> Natural Trail</p>
                     <p><strong>Difficulty:</strong> Intermediate</p>
+                    <p><strong>Access:</strong> Multiple entry points</p>
                     <hr style="margin: 8px 0;">
                     <small>Data from <a href="https://nwa.flowfeed.app" target="_blank">Flowfeed</a></small>
                 </div>
             `;
             
             trail.bindPopup(popupContent);
-            startMarker.bindPopup('<strong>🟢 Trail Start</strong><br>Wolf Trail begins here');
-            endMarker.bindPopup('<strong>🔴 Trail End</strong><br>Wolf Trail ends here');
             
             // Fit map to trail bounds with padding
             map.fitBounds(trail.getBounds(), { 
@@ -206,7 +159,6 @@
         // Load the trail when page loads
         displayTrail();
         
-        // Add a subtle loading indicator
         console.log('Wolf Trail Map - Powered by Flowfeed & OpenStreetMap');
     </script>
 </body>
