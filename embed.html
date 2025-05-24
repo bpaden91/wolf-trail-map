@@ -19,10 +19,28 @@
             attribution: '&copy; OpenStreetMap | Flowfeed'
         }).addTo(map);
         
-        // Trail coordinates (you can replace with live API data later)
-        const coords = [[36.321259, -94.236789], [36.320845, -94.236234], [36.320234, -94.235456], [36.319567, -94.234678], [36.318912, -94.233945], [36.318345, -94.233234], [36.317789, -94.232567], [36.317234, -94.231890]];
+        // Trail coordinates
+        const coords = [
+            [36.321259, -94.236789], [36.320845, -94.236234], [36.320234, -94.235456],
+            [36.319567, -94.234678], [36.318912, -94.233945], [36.318345, -94.233234],
+            [36.317789, -94.232567], [36.317234, -94.231890], [36.316678, -94.231234],
+            [36.316123, -94.230567], [36.315567, -94.229890], [36.315012, -94.229234]
+        ];
         
-        L.polyline(coords, {color: '#1976D2', weight: 5, opacity: 0.8}).addTo(map).fitBounds(coords);
+        const trail = L.polyline(coords, {
+            color: '#1976D2', 
+            weight: 5, 
+            opacity: 0.8,
+            smoothFactor: 2,
+            lineCap: 'round',
+            lineJoin: 'round'
+        }).addTo(map);
+        
+        // Add trail popup
+        trail.bindPopup('<strong>🥾 Wolf Trail</strong><br>Mountain Bike Trail<br>Multiple access points');
+        
+        // Fit map to trail
+        map.fitBounds(trail.getBounds(), { padding: [20, 20], maxZoom: 16 });
     </script>
 </body>
 </html>
