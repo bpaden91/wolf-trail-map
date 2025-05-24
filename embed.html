@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wolf Trail Embed</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { height: 100vh; width: 100%; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script>
+        var map = L.map('map').setView([36.317554, -94.233953], 15);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap | Flowfeed'
+        }).addTo(map);
+        
+        // Trail coordinates (you can replace with live API data later)
+        const coords = [[36.321259, -94.236789], [36.320845, -94.236234], [36.320234, -94.235456], [36.319567, -94.234678], [36.318912, -94.233945], [36.318345, -94.233234], [36.317789, -94.232567], [36.317234, -94.231890]];
+        
+        L.polyline(coords, {color: '#1976D2', weight: 5, opacity: 0.8}).addTo(map).fitBounds(coords);
+    </script>
+</body>
+</html>
