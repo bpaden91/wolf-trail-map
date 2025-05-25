@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wolf Park Trails - Interactive Map</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <style>
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+        }
+        #map { 
+            height: 100vh; 
+            width: 100%; 
+        }
+        
+        /* Hide attribution links */
+        .leaflet-control-attribution {
+            display: none !important;
+        }
+        
+        /* Navigation buttons */
+        .nav-btn {
+            position: absolute;
+            top: 10px;
+            z-index: 1000;
+            background: #333333;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+        .nav-btn:hover {
+            background: #222222;
+            color: white;
+        }
+        
+        /* Position buttons side by side */
+        .trailhead-btn {
+            right: 90px; /* Leave space for parking button */
+        }
+        .parking-btn {
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    
+    <!-- Navigation Buttons -->
+    <a href="https://maps.app.goo.gl/rkE7nTyYaTG2dNHP9" 
+       target="_blank" 
+       class="nav-btn trailhead-btn">
+       Trailhead
+    </a>
+    
+    <a href="https://maps.app.goo.gl/N97eNwZPTHywiJ7Z7" 
+       target="_blank" 
+       class="nav-btn parking-btn">
+       Parking
+    </a>
+    
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <script>
+        // Initialize the map
+        var map = L.map('map', {
+            zoomControl: true,
+            scrollWheelZoom: true,
+            doubleClickZoom: true
+        }).setView([36.317554, -94.233953], 14);
+        
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | <a href="https://nwa.flowfeed.app">Flowfeed</a>'
+        }).addTo(map);
+        
+        // Function to fetch Wolf Park trails
+        async function fetchWolfParkTrails() {
+            const trailIds = [875314336, 875314337, 875314338];
+            const query = `
+                [out:json][timeout:25];
+                (
+                    way(875314336);
+                    way(875314337);
+                    way(875314338);
+                );
+                out geom;
+            `;
+            
+            const url = 'https://overpass-api.de/api/interpreter';
+            
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: query,
+                    headers: {
+                        'Content-Type': 'text/plain'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    return data;
+                }
+            } catch (error) {
+                console.log('Using fallback coordinates');
+            }
+            return null;
+        }
+        
+        // Function to display all Wolf Park trails
+        async function displayWolfParkTrails() {
+            console.log('Loading Wolf Park trail system...');
+            
+            const data = await fetchWolfParkTrails();
+            let allBounds = [];
+            
+            if (data && data.elements && data.elements.length > 0) {
+                // Process each trail segment
+                data.elements.forEach((way, index) => {
+                    if (way.geometry) {
+                        const trailCoords = way.geometry.map(point => [point.lat, point.lon]);
+                        
+                        // Create polyline for each segment - all in Flowfeed orange
+                        const trail = L.polyline(trailCoords, {
+                            color: '#FF7900',           // Flowfeed brand color
+                            weight: 5,
+                            opacity: 0.9,
+                            smoothFactor: 2,
+                            lineCap: 'round',
+                            lineJoin: 'round'
+                        }).addTo(map);
+                        
+                        // Collect bounds for fitting map view
+                        allBounds = allBounds.concat(trailCoords);
+                        
+                        console.log(`Loaded Wolf Park trail segment ${index + 1}`);
+                    }
+                });
+            }
+            
+            // Fallback coordinates if API fails
+            if (allBounds.length === 0) {
+                const fallbackCoords = [
+                    [36.321259, -94.236789],
+                    [36.320845, -94.236234],
+                    [36.320234, -94.235456],
+                    [36.319567, -94.234678],
+                    [36.318912, -94.233945],
+                    [36.318345, -94.233234],
+                    [36.317789, -94.232567],
+                    [36.317234, -94.231890],
+                    [36.316678, -94.231234],
+                    [36.316123, -94.230567],
+                    [36.315567, -94.229890],
+                    [36.315012, -94.229234]
+                ];
+                
+                L.polyline(fallbackCoords, {
+                    color: '#FF7900',
+                    weight: 5,
+                    opacity: 0.9,
+                    smoothFactor: 2,
+                    lineCap: 'round',
+                    lineJoin: 'round'
+                }).addTo(map);
+                
+                allBounds = fallbackCoords;
+                console.log('Using fallback coordinates');
+            }
+            
+            // Fit map to show all Wolf Park trails
+            if (allBounds.length > 0) {
+                map.fitBounds(allBounds, { 
+                    padding: [40, 40],
+                    maxZoom: 15 
+                });
+            }
+            
+            console.log('Wolf Park trail system loaded successfully!');
+        }
+        
+        // Load the trails when page loads
+        displayWolfParkTrails();
+        
+        console.log('Wolf Park Trail System - Powered by Flowfeed & OpenStreetMap');
+    </script>
+</body>
+</html>
