@@ -26,7 +26,7 @@
             top: 10px;
             right: 10px;
             z-index: 1000;
-            background: #4285f4;
+            background: #333333;
             color: white;
             padding: 8px 16px;
             border: none;
@@ -38,7 +38,7 @@
             cursor: pointer;
         }
         .directions-btn:hover {
-            background: #3367d6;
+            background: #222222;
             color: white;
         }
         
@@ -50,7 +50,7 @@
         }
         .trail-popup h3 {
             margin: 0 0 8px 0;
-            color: #2c5530;
+            color: #FF7900;
             font-size: 16px;
         }
     </style>
@@ -150,11 +150,11 @@
                 console.log('Using fallback coordinates');
             }
             
-            // Create the trail polyline with Google Maps-style appearance
+            // Create the trail polyline with Flowfeed brand color
             const trail = L.polyline(trailCoords, {
-                color: '#1976D2',        // Blue like Google Maps trails
+                color: '#FF7900',           // Flowfeed brand color
                 weight: 5,
-                opacity: 0.8,
+                opacity: 0.9,
                 smoothFactor: 2,
                 lineCap: 'round',
                 lineJoin: 'round'
