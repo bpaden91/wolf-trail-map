@@ -20,6 +20,28 @@
             width: 100%; 
         }
         
+        /* Directions button */
+        .directions-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: #4285f4;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+        .directions-btn:hover {
+            background: #3367d6;
+            color: white;
+        }
+        
         /* Trail info popup styling */
         .trail-popup {
             font-size: 14px;
@@ -35,6 +57,13 @@
 </head>
 <body>
     <div id="map"></div>
+    
+    <!-- Directions Button -->
+    <a href="https://maps.app.goo.gl/yuMJUgJ9V83QFB1J9" 
+       target="_blank" 
+       class="directions-btn">
+       📍 Get Directions
+    </a>
     
     <!-- Leaflet JavaScript -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
