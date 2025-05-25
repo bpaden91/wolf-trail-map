@@ -46,18 +46,6 @@
             background: #222222;
             color: white;
         }
-        
-        /* Trail info popup styling */
-        .trail-popup {
-            font-size: 14px;
-            line-height: 1.4;
-            max-width: 200px;
-        }
-        .trail-popup h3 {
-            margin: 0 0 8px 0;
-            color: #FF7900;
-            font-size: 16px;
-        }
     </style>
 </head>
 <body>
@@ -164,22 +152,6 @@
                 lineCap: 'round',
                 lineJoin: 'round'
             }).addTo(map);
-            
-            // Add popup with trail information
-            const popupContent = `
-                <div class="trail-popup">
-                    <h3>🥾 Wolf Trail</h3>
-                    <p><strong>Type:</strong> Mountain Bike Trail</p>
-                    <p><strong>Location:</strong> Bentonville, AR</p>
-                    <p><strong>Surface:</strong> Natural Trail</p>
-                    <p><strong>Difficulty:</strong> Intermediate</p>
-                    <p><strong>Access:</strong> Multiple entry points</p>
-                    <hr style="margin: 8px 0;">
-                    <small>Data from <a href="https://nwa.flowfeed.app" target="_blank">Flowfeed</a></small>
-                </div>
-            `;
-            
-            trail.bindPopup(popupContent);
             
             // Fit map to trail bounds with padding
             map.fitBounds(trail.getBounds(), { 
