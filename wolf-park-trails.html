@@ -24,16 +24,123 @@
         .leaflet-control-attribution {
             display: none !important;
         }
+        
+        /* Parking dropdown container */
+        .parking-dropdown {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+        }
+        
+        /* Parking button */
+        .parking-btn {
+            background: #333333;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .parking-btn:hover {
+            background: #222222;
+        }
+        
+        /* Dropdown arrow */
+        .dropdown-arrow {
+            font-size: 12px;
+            transition: transform 0.2s;
+        }
+        .dropdown-arrow.open {
+            transform: rotate(180deg);
+        }
+        
+        /* Dropdown menu */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            min-width: 150px;
+            display: none;
+            overflow: hidden;
+        }
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        /* Dropdown items */
+        .dropdown-item {
+            display: block;
+            padding: 10px 12px;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            border-bottom: 1px solid #eee;
+        }
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+        .dropdown-item:hover {
+            background: #f5f5f5;
+            color: #333;
+        }
     </style>
 </head>
 <body>
     <div id="map"></div>
+    
+    <!-- Parking Dropdown -->
+    <div class="parking-dropdown">
+        <button class="parking-btn" onclick="toggleDropdown()">
+            Parking <span class="dropdown-arrow" id="dropdownArrow">▼</span>
+        </button>
+        <div class="dropdown-menu" id="dropdownMenu">
+            <a href="https://maps.app.goo.gl/vaUrSuLP29HC4v3eA" 
+               target="_blank" 
+               class="dropdown-item">
+               Wolf Park
+            </a>
+            <a href="https://maps.app.goo.gl/rikQYYbs8Xvowm8F9" 
+               target="_blank" 
+               class="dropdown-item">
+               Fulbright
+            </a>
+        </div>
+    </div>
     
     <!-- Leaflet JavaScript -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     
     <script>
+        // Dropdown functionality
+        function toggleDropdown() {
+            const menu = document.getElementById('dropdownMenu');
+            const arrow = document.getElementById('dropdownArrow');
+            
+            menu.classList.toggle('show');
+            arrow.classList.toggle('open');
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.parking-dropdown');
+            if (!dropdown.contains(event.target)) {
+                document.getElementById('dropdownMenu').classList.remove('show');
+                document.getElementById('dropdownArrow').classList.remove('open');
+            }
+        });
+        
         // Initialize the map
         var map = L.map('map', {
             zoomControl: true,
