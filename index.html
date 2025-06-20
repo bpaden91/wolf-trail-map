@@ -181,16 +181,14 @@
 
             const treeMarker = L.marker([36.317915, -94.232975], {
                 icon: treeIcon,
-                title: 'Tree Down'
+                title: 'Fallen tree/branch'
             }).addTo(map);
 
             const popupContent = `
-                <div style="font-size: 14px; max-width: 200px;">
-                    <h4 style="margin: 0 0 8px 0; color: #dc3545;">🌳 Tree Down</h4>
-                    <p style="margin: 4px 0;"><strong>Status:</strong> Trail Blocked</p>
-                    <p style="margin: 4px 0;"><strong>Severity:</strong> High</p>
-                    <p style="margin: 4px 0;"><strong>Reported:</strong> Today</p>
-                    <p style="margin: 4px 0; font-style: italic;">Large tree blocking trail passage</p>
+                <div style="font-size: 14px; max-width: 200px; color: #000;">
+                    <p style="margin: 0 0 8px 0; font-weight: bold; color: #000;">🌳 <strong>Fallen tree/branch</strong></p>
+                    <p style="margin: 4px 0; color: #000;"><strong>Alert Level:</strong> High</p>
+                    <p style="margin: 4px 0; color: #000;"><strong>Reported:</strong> 6/19/2025, 2:50:26 PM</p>
                 </div>
             `;
 
