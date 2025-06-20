@@ -172,6 +172,30 @@
                 maxZoom: 16 
             });
             
+            // Add tree obstruction marker
+            const treeIcon = L.divIcon({
+                html: '<div style="background-color: #dc3545; color: white; border-radius: 50%; width: 24px; height: 24px; text-align: center; line-height: 24px; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); font-size: 14px;">🌳</div>',
+                iconSize: [24, 24],
+                className: 'tree-obstruction-marker'
+            });
+
+            const treeMarker = L.marker([36.317915, -94.232975], {
+                icon: treeIcon,
+                title: 'Tree Down'
+            }).addTo(map);
+
+            const popupContent = `
+                <div style="font-size: 14px; max-width: 200px;">
+                    <h4 style="margin: 0 0 8px 0; color: #dc3545;">🌳 Tree Down</h4>
+                    <p style="margin: 4px 0;"><strong>Status:</strong> Trail Blocked</p>
+                    <p style="margin: 4px 0;"><strong>Severity:</strong> High</p>
+                    <p style="margin: 4px 0;"><strong>Reported:</strong> Today</p>
+                    <p style="margin: 4px 0; font-style: italic;">Large tree blocking trail passage</p>
+                </div>
+            `;
+
+            treeMarker.bindPopup(popupContent);
+            
             console.log('Wolf Trail loaded successfully!');
         }
         
